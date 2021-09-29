@@ -33,3 +33,20 @@ as.numeric(problem1_df$factor_vector) #apply the as.numeric function to the fact
 
 
 # Problem 2: 
+```{r}
+# the data in this dataset
+data("penguins", package = "palmerpenguins")
+penguins
+names(penguins)
+
+#the size of the dataset
+nrow(penguins) #number of rows
+ncol(penguins) #number of rows
+
+#the mean flipper length
+sum(is.na(penguins$flipper_length_mm))
+mean = mean(pull(penguins, flipper_length_mm),na.rm = TRUE) #exclude NA values and calculate mean for non-missing values
+mean
+```
+
+Hence, the names included in this datasets are: `r names(penguins)`. And this dataset contains `r nrow(penguins)` rows and `r ncol(penguins)` columns. The mean of flipper length is `r mean` mm.
