@@ -50,7 +50,7 @@ mean
 ```
  - Hence, the names included in this datasets are: `r names(penguins)`. And this dataset contains `r nrow(penguins)` rows and `r ncol(penguins)` columns. The mean of flipper length is `r mean` mm.   
  
-```{r}
+```{r warning = FALSE}
 #scatterplot of flipper_length_mm (y) vs bill_length_mm (x); 
 
 ggplot(penguins, aes(x = bill_length_mm, y = flipper_length_mm, color = species)) + geom_point()
