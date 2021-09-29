@@ -4,22 +4,32 @@ author: "Yuxuan Chen"
 output: github_document
 ---
 # Problem 1:
-```{r message = FALSE}
+```{r message = FALSE, warning = FALSE}
 library(tidyverse)
 problem1_df = 
   tibble(
     norm_samp = rnorm(10, mean = 0, sd = 1), #random sample (size 10) from standard Normal distribution
     norm_samp_pos = norm_samp > 0, #logical vector indicating whether elements of the sample are greater than 0
-    vec_char = vector("character", length = 10), #a character vector of length 10
-    vec_factor = factor(c("a","a","a","b","b","b","b","c","c","c")) 
-        #a factor vector of length 10, with 3 different factor “levels” ?
+    character_vector = vector("character", length = 10), #a character vector of length 10
+    factor_vector = factor(c("a","a","a","b","b","b","b","c","c","c")) 
+        #a factor vector of length 10, with 3 different factor “levels” ???
   )
 
 mean(pull(problem1_df, norm_samp))
 mean(pull(problem1_df, norm_samp_pos))
-mean(pull(problem1_df, vec_char))
-mean(pull(problem1_df, vec_factor))
+mean(pull(problem1_df, character_vector))
+mean(pull(problem1_df, factor_vector))
 ```
 
  - After trying to take the mean of each variable in the dataframe, the random sample variables and logical variables work. But the character variables and factor variables do not, since they are not numeric or logical.
 
+```{r eval = FALSE}
+as.numeric(problem1_df$norm_samp_pos) #apply the as.numeric function to the logical variables
+as.numeric(problem1_df$character_vector)  #apply the as.numeric function to the character variables
+as.numeric(problem1_df$factor_vector) #apply the as.numeric function to the factor variables
+```
+ - After applying the as.numeric function, the logical and factor variables are converted to the numeric; and the character variables are unable to converted to numeric. This is because as.numeric attempts to coerce its argument to the numeric type, which is often meaningless since it may not correspond to the factor levels. Hence, this does not help explain what happens when trying to take the mean.
+
+
+
+# Problem 2: 
