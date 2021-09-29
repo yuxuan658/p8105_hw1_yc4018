@@ -5,6 +5,7 @@ output: github_document
 ---
 # Problem 1:
 ```{r message = FALSE, warning = FALSE}
+set.seed(1)
 library(tidyverse)
 problem1_df = 
   tibble(
@@ -12,48 +13,69 @@ problem1_df =
     norm_samp_pos = norm_samp > 0, #logical vector indicating whether elements of the sample are greater than 0
     character_vector = vector("character", length = 10), #a character vector of length 10
     factor_vector = factor(c("a","a","a","b","b","b","b","c","c","c")) 
-        #a factor vector of length 10, with 3 different factor “levels” ???
+        #a factor vector of length 10, with 3 different factor “levels”
   )
 
-mean(pull(problem1_df, norm_samp))
-mean(pull(problem1_df, norm_samp_pos))
-mean(pull(problem1_df, character_vector))
-mean(pull(problem1_df, factor_vector))
+problem1_df
 ```
 
- - After trying to take the mean of each variable in the dataframe, the random sample variables and logical variables work. But the character variables and factor variables do not, since they are not numeric or logical.
+```{r collapse = TRUE}
+num_vecter = pull(problem1_df, norm_samp)
+logical_vecter = pull(problem1_df, norm_samp_pos)
+character_vecter = pull(problem1_df, character_vector)
+facter_vector = pull(problem1_df, factor_vector)
+
+mean(num_vecter)
+mean(logical_vecter)
+mean(character_vecter)
+mean(facter_vector)
+```
+ - After trying to take the mean of each variable in the dataframe, the numeric variables and logical variables work since they have arithmetic values. The logical variables have 1 for True and 0 for False. However, the character variables and factor variables do not, since they are not numeric or logical.
 
 ```{r eval = FALSE}
-as.numeric(problem1_df$norm_samp_pos) #apply the as.numeric function to the logical variables
-as.numeric(problem1_df$character_vector)  #apply the as.numeric function to the character variables
-as.numeric(problem1_df$factor_vector) #apply the as.numeric function to the factor variables
+as.numeric(logical_vecter) #apply the as.numeric function to the logical variables
+as.numeric(character_vecter)  #apply the as.numeric function to the character variables
+as.numeric(facter_vector) #apply the as.numeric function to the factor variables
 ```
- - After applying the as.numeric function, the logical and factor variables are converted to the numeric; and the character variables are unable to converted to numeric. This is because as.numeric attempts to coerce its argument to the numeric type, which is often meaningless since it may not correspond to the factor levels. Hence, this does not help explain what happens when trying to take the mean.
+ - After applying the as.numeric function, the logical and factor variables are converted to the numeric; and the character variables are unable to converted to numeric. The logical variables will be converted to 1 for True and 0 for False. And the factor variables will return the underlying numeric (integer) representation. This is because as.numeric attempts to coerce its argument to the numeric type, which is often meaningless since it may not correspond to the factor levels. 
+ 
+ - The as.numeric function help explain what happens for logical variables when trying to take their mean since we can know the ratio of True to False from the result. The as.numeric function also helps explain  what happens for character variables when trying to take their mean. Since character variables are not numeric and cannot be converted to numeric, their mean will be shown as NA. However, since as.numeric function converts its argument to numeric regardless the factor levels, it does not help explain what happens for factor variables when trying to take their mean.
 
 ***
 
 # Problem 2: 
-```{r}
+```{r collapse = TRUE}
 # the data in this dataset
 data("penguins", package = "palmerpenguins")
 penguins
 names(penguins)
 
 #the size of the dataset
-nrow(penguins) #number of rows
-ncol(penguins) #number of rows
+row = nrow(penguins) #number of rows
+column = ncol(penguins) #number of rows
 
 #the mean flipper length
 sum(is.na(penguins$flipper_length_mm))
 mean = mean(pull(penguins, flipper_length_mm),na.rm = TRUE) #exclude NA values and calculate mean for non-missing values
-mean
 ```
- - Hence, the names included in this datasets are: `r names(penguins)`. And this dataset contains `r nrow(penguins)` rows and `r ncol(penguins)` columns. The mean of flipper length is `r mean` mm.   
+ - Hence, the names included in this "penguins" datasets are: `r names(penguins)`. And this dataset contains `r row` rows and `r column` columns. After excluding the NA values, the mean of flipper length is `r mean` mm.   
+ 
+ - Since bill_length_mm, bill_depth_mm, flipper_length_mm, and body_mass_g are important variables, the mean values of these variables are calculated in below R chunk.
+```{r}
+mean_billlength = mean(pull(penguins, bill_length_mm),na.rm = TRUE) 
+mean_billdepth = mean(pull(penguins, bill_depth_mm),na.rm = TRUE) 
+mean_flipperlength = mean(pull(penguins, flipper_length_mm),na.rm = TRUE) 
+mean_bodymass = mean(pull(penguins, body_mass_g),na.rm = TRUE) 
+
+```
+ - Hence, the mean of bill_length_mm is `r mean_billlength`, mean of bill_depth_mm is `r mean_billdepth`, mean of flipper_length_mm is `r mean_flipperlength`, and the mean of body_mass_g is `r mean_bodymass`.
+ 
  
 ```{r warning = FALSE}
 #scatterplot of flipper_length_mm (y) vs bill_length_mm (x); 
 
-ggplot(penguins, aes(x = bill_length_mm, y = flipper_length_mm, color = species)) + geom_point()
+ggplot(penguins, aes(x = bill_length_mm, y = flipper_length_mm, 
+                     color = species)) + geom_point() + labs(title = "flipper_length_mm vs bill_length_mm")
 ggsave("./scatterplot.pdf", height = 5, width = 6)
 ```
 
