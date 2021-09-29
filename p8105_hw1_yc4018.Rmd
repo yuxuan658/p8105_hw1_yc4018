@@ -4,7 +4,7 @@ author: "Yuxuan Chen"
 output: github_document
 ---
 # Problem 1:
-```{r message=FALSE}
+```{r message = FALSE}
 library(tidyverse)
 problem1_df = 
   tibble(
@@ -15,6 +15,11 @@ problem1_df =
         #a factor vector of length 10, with 3 different factor “levels” ?
   )
 
-
+mean(pull(problem1_df, norm_samp))
+mean(pull(problem1_df, norm_samp_pos))
+mean(pull(problem1_df, vec_char))
+mean(pull(problem1_df, vec_factor))
 ```
+
+ - After trying to take the mean of each variable in the dataframe, the random sample variables and logical variables work. But the character variables and factor variables do not, since they are not numeric or logical.
 
