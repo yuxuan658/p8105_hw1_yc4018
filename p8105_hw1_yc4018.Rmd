@@ -30,7 +30,7 @@ as.numeric(problem1_df$factor_vector) #apply the as.numeric function to the fact
 ```
  - After applying the as.numeric function, the logical and factor variables are converted to the numeric; and the character variables are unable to converted to numeric. This is because as.numeric attempts to coerce its argument to the numeric type, which is often meaningless since it may not correspond to the factor levels. Hence, this does not help explain what happens when trying to take the mean.
 
-
+***
 
 # Problem 2: 
 ```{r}
@@ -48,5 +48,12 @@ sum(is.na(penguins$flipper_length_mm))
 mean = mean(pull(penguins, flipper_length_mm),na.rm = TRUE) #exclude NA values and calculate mean for non-missing values
 mean
 ```
+ - Hence, the names included in this datasets are: `r names(penguins)`. And this dataset contains `r nrow(penguins)` rows and `r ncol(penguins)` columns. The mean of flipper length is `r mean` mm.   
+ 
+```{r}
+#scatterplot of flipper_length_mm (y) vs bill_length_mm (x); 
 
-Hence, the names included in this datasets are: `r names(penguins)`. And this dataset contains `r nrow(penguins)` rows and `r ncol(penguins)` columns. The mean of flipper length is `r mean` mm.
+ggplot(penguins, aes(x = bill_length_mm, y = flipper_length_mm, color = species)) + geom_point()
+ggsave("./scatterplot.pdf", height = 5, width = 6)
+```
+
